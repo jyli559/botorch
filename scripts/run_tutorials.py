@@ -200,6 +200,8 @@ def run_tutorials(
         if not include_ignored and tutorial.name in ignored_tutorials:
             print(f"Ignoring tutorial {tutorial.name}.")
             continue
+        if "Multi" not in tutorial.name:
+            continue
         num_runs += 1
         error, performance_info = run_tutorial(tutorial, smoke_test=smoke_test)
         if error:
