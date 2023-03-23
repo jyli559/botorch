@@ -128,6 +128,8 @@ if [[ $VERSION == false ]]; then
   cd .. || exit
   ./scripts/build_docs.sh -b
   rm -rf website/build/botorch/docs/next  # don't need this
+  
+  echo "Done building docs"
 
   # Move built site to gh-pages (but keep old versions.js)
   cd "${WORK_DIR}" || exit
@@ -138,11 +140,17 @@ if [[ $VERSION == false ]]; then
   cp versions.html botorch-gh-pages/v/latest/versions.html
   cp versions.html botorch-gh-pages/v/latest/en/versions.html
 
+  echo "Done with copying stuff docs"
+  
   # Push changes to gh-pages
   cd botorch-gh-pages || exit
   git add .
+  echo "Done with git add, moving to commit"
   git commit -m 'Update latest version of site'
+  
+  echo "Done with git commit"
   git push
+  echo "Done pushing"
 
 else
   echo "-----------------------------------------"
