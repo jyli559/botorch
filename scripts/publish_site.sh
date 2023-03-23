@@ -57,6 +57,7 @@ if [[ $DOCUSAURUS_BOT == true ]]; then
   git config --global user.email "docusaurus-bot@users.noreply.github.com"
   git config --global user.name "BoTorch website deployment script"
   echo "machine github.com login docusaurus-bot password ${DOCUSAURUS_PUBLISH_TOKEN}" > ~/.netrc
+  chmod 0600 ~/.netrc
 
   # Clone both main & gh-pages branches
   git clone https://docusaurus-bot@github.com/pytorch/botorch.git botorch-main
