@@ -52,6 +52,22 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORK_DIR=$(mktemp -d)
 cd "${WORK_DIR}" || exit
 
+if [[ -v DOCUSAURUS_PUBLISH_TOKEN ]]; then
+  echo "publish token is set"
+fi
+if [ -z "$DOCUSAURUS_PUBLISH_TOKEN" ]
+then
+  echo "the token is empty"
+else
+  echo "the token is NOT empty"
+  n=${#DOCUSAURUS_PUBLISH_TOKEN}
+  echo "Length of the token is : $n "
+fi
+
+exit
+
+
+
 if [[ $DOCUSAURUS_BOT == true ]]; then
   # Assumes docusaurus bot credentials have been stored in ~/.netrc, e.g. via
   git config --global user.email "docusaurus-bot@users.noreply.github.com"
