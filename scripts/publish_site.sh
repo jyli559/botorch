@@ -142,7 +142,8 @@ if [[ $VERSION == false ]]; then
   cd botorch-gh-pages || exit
   git add .
   git commit -m 'Update latest version of site'
-  git push
+#   git push
+  git push https://docusaurus-bot:${DOCUSAURUS_PUBLISH_TOKEN}@github.com/pytorch/botorch.git botorch-gh-pages
 
 else
   echo "-----------------------------------------"
