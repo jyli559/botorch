@@ -4,6 +4,8 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+set -e
+
 usage() {
   echo "Usage: $0 [-d] [-v VERSION]"
   echo ""
@@ -52,18 +54,24 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORK_DIR=$(mktemp -d)
 cd "${WORK_DIR}" || exit
 
+BOTORCH_REPO_URL="https://github.com/pytorch/botorch.git"
+
 if [[ $DOCUSAURUS_BOT == true ]]; then
-  # Assumes docusaurus bot credentials have been stored in ~/.netrc, e.g. via
+  BOTORCH_REPO_URL="https://docusaurus-bot:${DOCUSAURUS_PUBLISH_TOKEN}@github.com/pytorch/botorch.git"
+fi
+
+# Clone both main & gh-pages branches
+git clone "${BOTORCH_REPO_URL}" botorch-main
+git clone --branch gh-pages "${BOTORCH_REPO_URL}" botorch-gh-pages
+
+if [[ $DOCUSAURUS_BOT == true ]]; then
+  cd botorch-main || exit
   git config --global user.email "docusaurus-bot@users.noreply.github.com"
   git config --global user.name "BoTorch website deployment script"
-  echo "machine github.com login docusaurus-bot password ${DOCUSAURUS_PUBLISH_TOKEN}" > ~/.netrc
-
-  # Clone both main & gh-pages branches
-  git clone https://docusaurus-bot@github.com/pytorch/botorch.git botorch-main
-  git clone --branch gh-pages https://docusaurus-bot@github.com/pytorch/botorch.git botorch-gh-pages
-else
-  git clone https://github.com/pytorch/botorch.git botorch-main
-  git clone --branch gh-pages https://github.com/pytorch/botorch.git botorch-gh-pages
+  cd ../botorch-gh-pages || exit
+  git config --global user.email "docusaurus-bot@users.noreply.github.com"
+  git config --global user.name "BoTorch website deployment script"
+  cd .. || exit
 fi
 
 # A few notes about the script below:
